@@ -1,0 +1,70 @@
+<head>
+{% load static %}
+    <title>Petshop</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'petshop/style.css' %}">
+</head>
+
+<body>
+    <h1>Bienvenue à l'animalerie</h1>
+    <h2>Tableau de bord</h2>
+
+    <br>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Race</th>
+            <th>Type</th>
+            <th>Etat</th>
+            <th>Lieu</th>
+        </tr>
+        {% for animal in animals_list %}
+        <tr class= "{% cycle 'green0' 'green1' %}">
+            <td> {{ animal.name }}</td>
+            <td>{{ animal.race }}</td>
+            <td>{{ animal.type }}</td>
+            <td>{{ animal.state }}</td>
+            <td>{{ animal.place }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <br>
+
+    <h2>Actions</h2>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %} >{{ message }}</p>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <br>
+
+    <form  action ="modify/" method="post">
+        <div class ="container">
+            <fieldset>
+                {% csrf_token %}
+                <legend>Les animaux</legend>
+                {% for animal in animals_list %}
+                 <input type="radio" name="animal" id="animal{{ forloop.counter }}" value="{{ animal.id }}">
+                 <label for="animal{{ forloop.counter }}">{{ animal.name }}</label><br>
+                {% endfor %}
+            </fieldset>
+
+            <fieldset>
+                <legend>Les actions</legend>
+                <input type="radio" name="action" id="nourrir" value="nourrir">
+                <label for="nourrir">Nourrir</label><br>
+                <input type="radio" name="action" id="divertir" value="divertir">
+                <label for="divertir">Divertir</label><br>
+                <input type="radio" name="action" id="coucher" value="coucher">
+                <label for="coucher">Coucher</label><br>
+                <input type="radio" name="action" id="reveiller" value="reveiller">
+                <label for="reveiller">Réveiller</label><br>
+
+            </fieldset>
+            <input type="submit" value="Go">
+        </div>
+    </form>
+</body>
